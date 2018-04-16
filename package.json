@@ -1,0 +1,23 @@
+{
+  "name": "Messenger",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/01o1o10/Messenger.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/01o1o10/Messenger/issues"
+  },
+  "homepage": "https://github.com/01o1o10/Messenger#readme",
+  "dependencies": {
+    "express": "^4.16.3"
+  }
+}
