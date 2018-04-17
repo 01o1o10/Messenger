@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/01o1o10/Messenger#readme",
   "dependencies": {
-    "express": "^4.16.3"
+    "express": "^4.16.3",
+    "socketio": "^1.0.0"
   }
 }

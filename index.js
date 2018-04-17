@@ -1,26 +1,26 @@
+
 var express = require('express');
-var path = require('path');
-var fs = require('fs');
-
 var app = express();
- 
-app.use('/public', express.static(path.join(__dirname, 'public')));
+var path = require('path');
+var server = require('http').Server(app);
+var io = require('socket.io')(server);
 
-app.get('/', function(req, res){
-    fs.readFile('./views/index.html', function(err, data){
-        res.write(data);
-        res.end('mesaj bitti');
-        console.log('homecontroller');
-    });
+global.kullanicilar = [];
+
+app.use('/public', express.static(path.join(__dirname, 'public'))); 
+app.use('/views', express.static(path.join(__dirname, 'views'))); 
+
+server.listen(1111);
+
+app.get('/', function (req, res) {
+  res.sendFile(__dirname + '/views/index.html');
 });
 
-app.get('/login', function(req, res){
-    fs.readFile('login.html', function(err, data){
-        res.write(data);
-        res.end('mesaj bitti');
-        console.log('logincontrller');
+io.on('connection', function (socket) {
+    console.log(socket.connected);
+    console.log("clietnden bağlantı var");
+    socket.on('event', function (data) {
+        global.kullanicilar.push(data);
+        console.log(global.kullanicilar);
     });
 });
-
-app.listen(1111);
-console.log('server çalışıyor');
