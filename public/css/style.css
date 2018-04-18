@@ -42,6 +42,7 @@
 }
 
 .messenger {
+    width: 100%;
     float: left;
     display: none;
 }
@@ -66,7 +67,33 @@
     border-radius:5px;
 }
 
+.users {
+    width: 25%;
+    margin: 0;
+    float: left;
+}
+
 .message-content {
+    width: 75%;
+    margin: 0;
     float: right;
-    background-color: #cceeff;
+    background-image: url("./../../images/bg.jpg");
+}
+
+.current-user {
+    margin: 0;
+    box-shadow: 1px 1px 4px black; 
+}
+
+.current-user h5 {
+    margin: 0;
+    padding-left: 10%; 
+}
+
+.message {
+    margin: 1%;
+    width: 80%;
+    height: auto;
+    border-radius: 10px;
+    background-color: green;
 }
