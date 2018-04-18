@@ -40,7 +40,7 @@ $(document).ready(function(){
 
 
 
-
+/*
 
     $('#login-form').submit(function (e){
         e.preventDefault();
@@ -63,5 +63,5 @@ $(document).ready(function(){
                 $('.userlist').append('<li class="list-group-item user-list-item">' + users[i].nick + '<div class="offline"></div></li>');
             }
         }
-    });
+    });*/
 });

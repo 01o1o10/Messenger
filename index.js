@@ -29,7 +29,10 @@ var con = mysql.createConnection({
   });
 
 io.on('connection', function (socket) {
-    var userinfo;
+
+    //bağlantıı olduğunda bunlar çalışacak.
+
+    /*var userinfo;
     socket.on('yeni kullanici', function (data) {
         
     });
@@ -41,5 +44,9 @@ io.on('connection', function (socket) {
             console.log('bir kullanıcı offline oldu');
             console.log(global.kullanicilar);
         }
+    });*/
+
+    socket.on('disconnect', function(){
+        //bağlantı kesildiğinde bu fonksiyon çalışır
     });
 });
