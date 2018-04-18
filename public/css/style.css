@@ -24,10 +24,54 @@
     display: block;
 }
 
-.left-sidebar {
-    background-color: gray;
+.btn-group{
+    margin: 0;
+    display: block;
+}
+
+.giris {
+    display: none;
+}
+
+.kaydol {
+    display: none;
+}
+
+/*.left-sidebar {
+    float: left;
+    margin: 0;
+    background-color: #008080;
+    box-shadow: 1px 1px 4px #000;
 }
 
 .content {
-    background-color: lightgray;
+    float: right;
+    margin: 0;
+    width: 75%;
+    background-color: hsl(0, 0%, 95%);
 }
+
+.online {
+    display: block;
+    float: right;
+    background-color: green;
+    height: 10px;  
+    width: 10px; 
+    margin: 7px;
+    border-radius:5px;
+}
+
+.offline {
+    margin: 7px;
+    float: right;
+    display: block;
+    background-color: red;
+    height: 10px;  
+    width: 10px; 
+    border-radius:5px;
+}
+
+.user-list-item {
+    margin: 1px;
+    border-radius: 3px;
+}*/

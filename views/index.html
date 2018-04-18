@@ -20,7 +20,6 @@
     <link rel="stylesheet" type="text/css" media="screen" href="./../public/css/style.css" />
     <script src="./../public/js/socket.io.slim.js"></script>
     <script src="./../public/js/jquery.js"></script>
-    <script type="application/javascript" src="./../public/js/js.js"></script>
 </head>
 <body>
     <div class="container">
@@ -30,13 +29,31 @@
         <div class="row">
             <p class="hosgeldin">Messenger</p>
         </div>
-        <div class="row">
-            <div class="form-group form" >
-                <label for="nick">Nick-name: </label>
-                <input class="form-control" type="text" id="nick">
-                <button class="btn btn-primary btn-lg button" type="submit" id="giris">Giriş</button>
+
+        <div class="row main">
+            <div class="btn-group">
+                <button type="button" id="giris">Giriş</button>
+                <button type="button" id="kaydol">Kaydol</button>
             </div>
         </div>
+
+        <div class="row kaydol">
+            <form id="register-form" class="form-group form">
+                <label for="username">User name: </label>
+                <input type="text" name="username" id="rusername" class="form-control">
+                <input value="Kaydol" type="submit" class="btn btn-primary btn-lg button">
+            </form>
+        </div>
+
+        <div class="row giris">
+            <form id="login-form" class="form-group form">
+                <label for="username">User name: </label>
+                <input type="text" name="username" id="lusername" class="form-control">
+                <input value="Giriş" type="submit" class="btn btn-primary btn-lg button">
+            </form>
+        </div>
+
     </div>
+    <script type="application/javascript" src="./../public/js/js.js"></script>
 </body>
 </html>
