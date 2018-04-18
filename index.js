@@ -25,10 +25,45 @@ var con = mysql.createConnection({
   
   con.connect(function(err) {
     if (err) throw err;
-    console.log("Connected!");
+    con.query("use messenger");
+    console.log("DB Connect successful!");
   });
 
 io.on('connection', function (socket) {
+
+    socket.on('register', function(data, callback){
+        con.query("SELECT * FROM users WHERE username = '" + data + "'", function (err, result) {
+            if (err) throw err;
+            if(result.length == 0){
+                var sql = "insert into users values('" + data + "', 0);";
+                con.query(sql, function (err, result) {
+                    if (err) throw err;
+                    console.log("1 record inserted");
+                    callback(true);
+                });
+            }
+            else{
+                console.log("Bu Kullanici ismi doludur.");
+                callback(false);
+            }
+            
+          });
+        
+        
+    });
+
+    socket.on('login', function(data, callback){
+        con.query("SELECT username FROM users WHERE username='" + data + "'", function (err, result, fields) {
+            if (err) throw err;
+
+            if(result.length == 1){
+                callback(true);
+            }
+            else{
+                callback(false);
+            }
+        });
+    });
 
     //bağlantıı olduğunda bunlar çalışacak.
 

@@ -15,21 +15,29 @@ $(document).ready(function(){
 
     $('#register-form').submit(function(e){
         e.preventDefault();
-
+        
         var username = $('#rusername').val();
-        socket.emit('register', username);
-        $('.kaydol').hide();
-        $('.main').show();
+        socket.emit('register', username, function(data){
+            if(data){
+                alert("Kayıt başarılı!\nGiriş sayfasına yönlendirileceksiniz.");
+                $('.kaydol').hide();
+                $('.giris').show();
+            }
+            else{
+                $('.kaydol').append('<h5 style="color: red; text-align: center;">Bu kullanıcı adı kayıtlı. Başka bir kullanıcı adı seçiniz!</h5>');
+            }
+        });
     });
 
     $('#login-form').submit(function(e){
         e.preventDefault();
 
-        var username = $('#rusername').val();
-        socket.emit('login', username, function(data){
+        var username = $('#lusername').val();
+        socket.emit('login', username, function(data, ){
             if(data){
+                alert('giriş başarılı!');
                 $('.giris').hide();
-                $('#messenger').show();
+                $('#messemger').show();
             }
             else{
                 alert('Böyle bir kullanıcı yok!\nVeya kullanıcı adını yanlış girdiniz!');
@@ -48,7 +56,7 @@ $(document).ready(function(){
             var ip = data.ip;
             var veri = {nick: $('#nick').val(), ip: ip };
             $('.container').children().remove();
-            $('.container').append('<div class="col-sm-3 left-sidebar"><ul class="list-group userlist"></ul></div><div class="col-sm-9 content"></div>');
+            $('.container').append('');
             socket.emit('yeni kullanici', veri);
         });
     });
