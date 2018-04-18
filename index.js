@@ -53,15 +53,24 @@ io.on('connection', function (socket) {
     });
 
     socket.on('login', function(data, callback){
+        socket.username = data;
         con.query("SELECT username FROM users WHERE username='" + data + "'", function (err, result, fields) {
             if (err) throw err;
 
             if(result.length == 1){
+                con.query("UPDATE users SET onlinedurum = 1 WHERE username='" + data + "';");
                 callback(true);
             }
             else{
                 callback(false);
             }
+        });
+    });
+
+    socket.on('set users', function(setUsers){
+        con.query("SELECT * FROM users", function (err, result, fields) {
+            if (err) throw err;
+            setUsers(result);
         });
     });
 
@@ -82,6 +91,10 @@ io.on('connection', function (socket) {
     });*/
 
     socket.on('disconnect', function(){
-        //bağlantı kesildiğinde bu fonksiyon çalışır
+        con.query("UPDATE users SET onlinedurum = 0 WHERE username='" + socket.username + "';");
+        con.query("SELECT * FROM users", function (err, result, fields) {
+            if (err) throw err;
+            socket.broadcast.emit('refresh users', result);
+        });
     });
 });

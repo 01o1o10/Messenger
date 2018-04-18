@@ -15,7 +15,7 @@ $(document).ready(function(){
 
     $('#register-form').submit(function(e){
         e.preventDefault();
-        
+
         var username = $('#rusername').val();
         socket.emit('register', username, function(data){
             if(data){
@@ -35,14 +35,31 @@ $(document).ready(function(){
         var username = $('#lusername').val();
         socket.emit('login', username, function(data, ){
             if(data){
-                alert('giriş başarılı!');
+                $('.header').hide();
                 $('.giris').hide();
-                $('#messemger').show();
+                $('.messenger').show();
+                socket.emit('set users', setUsers);
             }
             else{
                 alert('Böyle bir kullanıcı yok!\nVeya kullanıcı adını yanlış girdiniz!');
             }
         });
+    });
+
+    function setUsers(users){
+        $('#users-tbody').children().remove();
+        for(var i in users){
+            if(users[i].onlinedurum){
+                $('#users-tbody').append('<tr><td>' + users[i].username +'<div class="online"></div></td></tr>');
+            }
+            else{
+                $('#users-tbody').append('<tr><td>' + users[i].username +'<div class="offline"></div></td></tr>');
+            }
+        }
+    }
+
+    socket.on('refresh users', function(users){
+        setUsers(users);
     });
 
 
@@ -64,12 +81,6 @@ $(document).ready(function(){
     socket.on('kullanicilistele', function(users){
         $('.userlist').children().remove();
         for(var i in users){
-            if(users[i].onlinedurum){
-                $('.userlist').append('<li class="list-group-item user-list-item">' + users[i].nick + '<div class="online"></div></li>');
-            }
-            else{
-                $('.userlist').append('<li class="list-group-item user-list-item">' + users[i].nick + '<div class="offline"></div></li>');
-            }
         }
     });*/
 });

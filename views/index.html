@@ -23,11 +23,13 @@
 </head>
 <body>
     <div class="container">
-        <div class="row">
-                <img class="logo" src="./../public/images/facebooklite-TA.jpg">
-        </div>
-        <div class="row">
-            <p class="hosgeldin">Messenger</p>
+        <div class="header">
+            <div class="row">
+                    <img class="logo" src="./../public/images/facebooklite-TA.jpg">
+            </div>
+            <div class="row">
+                <p class="hosgeldin">Messenger</p>
+            </div>
         </div>
 
         <div class="row main">
@@ -53,12 +55,24 @@
             </form>
         </div>
 
-        <div id=" row messenger">
-            <div class="col-sm-3 left-sidebar">
-                <ul class="list-group userlist"></ul>
+        <div class="row messenger">
+            <div class="users col-sm-4">         
+                <table class="table table-dark table-striped">
+                <thead>
+                    <tr>
+                    <th>Kullanıcılar</th>
+                    </tr>
+                </thead>
+                <tbody id="users-tbody">
+                </tbody>
+                </table>
             </div>
-            <div class="col-sm-9 content"></div>
+            <div class="col-sm-8 message-content">
+                <div class="row current-user"><h5>Kullanıcı</h5></div>
+                <div class="row content"></div>
+            </div>
         </div>
+        
     </div>
     <script type="application/javascript" src="./../public/js/js.js"></script>
 </body>
