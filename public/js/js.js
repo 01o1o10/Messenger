@@ -51,7 +51,7 @@ $(document).ready(function(){
     });
 
     $(document).on('click', 'td', function(){///user selection
-        $('#message-form').prevAll().remove();
+        $('#message-form').prev().children().remove();
         selectedUsername = $(this).children().first().next().html();
         socket.emit('user selected', username, selectedUsername, function(message){
             if(message){
@@ -62,12 +62,12 @@ $(document).ready(function(){
                 setMessages();
             }
             $('.izin-istegi1 #evet').click(function(){
-                $('#message-form').prevAll().remove();
+                $('#message-form').prev().children().remove();
                 socket.emit('izin istegi', username, selectedUsername);
                 $('.content').append('<div class="izin-istegi1">İstek gönderildi!</br></div>');
             });
             $('.izin-istegi1 #hayir').click(function(){
-                $('#message-form').prevAll().remove();
+                $('#message-form').prev().children().remove();
             });
         });
     });
@@ -92,7 +92,7 @@ $(document).ready(function(){
         
         var message = $('#message').val();
         socket.emit('message', message, username, selectedUsername);
-        $('.content').append('<div class="message"><p style="font-size: 1em; float: right;">' + message +'</p></div>');
+        $('.content ul').append('<li class="message"><p style="font-size: 1em; float: right;">' + message +'</p></li>');
     });
 
     ///EVENTS
@@ -105,11 +105,11 @@ $(document).ready(function(){
     socket.on('perm res', function(perm, user2){
         if(selectedUsername == user2){
             if(perm){
-                $('#message-form').prevAll().remove();
+                $('#message-form').prev().children().remove();
                 $('#message-form').show();
             }
             else{
-                $('#message-form').prevAll().remove();
+                $('#message-form').prev().children().remove();
                 $('.content').append('<div class="receiver-message"><p style="font-size: 1em; color: red;">İstek reddedildi!</p></div>');
             }
         }
@@ -117,7 +117,7 @@ $(document).ready(function(){
 
     socket.on('message', function(message, sender){
         if(sender == selectedUsername){
-            $('.content').append('<div class="receiver-message"><p style="font-size: 1em;">' + message + '</p></div>');
+            $('.content ul').append('<li class="receiver-message"><p style="font-size: 1em;">' + message + '</p></li>');
         }
     });
 
@@ -152,13 +152,14 @@ $(document).ready(function(){
     }
 
     function setMessages(){
+        alert($('.content ul').html());
         socket.emit('set messages', username, selectedUsername, function(messages){
             for(var i in messages){
                 if(messages[i].user1 == username){
-                    $('.content').append('<div class="sender-message"><p style="font-size: 1em;">' + messages[i].message + '</p></div>');
+                    $('.content ul').append('<li class="sender-message"><p style="font-size: 1em;">' + messages[i].message + '</p></li>');
                 }   
                 else{
-                    $('.content').append('<div class="receiver-message"><p style="font-size: 1em;">' + messages[i].message + '</p></div>');
+                    $('.content ul').append('<li class="receiver-message"><p style="font-size: 1em;">' + messages[i].message + '</p></li>');
                 }
             }
         });

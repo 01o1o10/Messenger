@@ -76,6 +76,7 @@
 .users {
     width: 25%;
     margin: 0;
+    padding: 0px;
     float: left;
 }
 
@@ -93,13 +94,15 @@
 }
 
 .message-content .top-bar {
-    height: 60px;
+    height: 70px;
     margin: 0;
-    box-shadow: 1px 1px 4px black; 
+    background-color: #ece5dd; 
+    box-shadow: 1px 1px 4px grey; 
+    position: relative;
 }
 
 .current-user { 
-    width: 89%;
+    width: 84%;
 }
 
 .content {
@@ -147,7 +150,8 @@
     width: 80%;
     height: auto;
     border-radius: 10px;
-    background-color: green;
+    background-color: #DCF8C6;
+    box-shadow: 1px 1px 4px black; 
 }
 
 .receiver-message {
@@ -157,19 +161,22 @@
     width: 80%;
     height: auto;
     border-radius: 10px;
-    background-color: blue;
+    background-color: white;
+    box-shadow: 1px 1px 1px black; 
 }
 
 #notify-icon {
     height: 40px;
     width: 40px;
+    margin: auto;
+    display: inline;
 }
 
 .dropdown {
-    display: inline;
+    display: block;
+    margin: auto;
+    padding: 0;
     float: right;
-    width: 9%;
-    margin: 3px;  
 }
 
 .dropdown-menu {
@@ -181,7 +188,8 @@
 .exit {
     width: 30px;
     height: 30px;
-    margin-top: 10px;
+    margin: auto;
+    float: right;
     color: white;
 }
 

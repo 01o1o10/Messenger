@@ -19,8 +19,8 @@ global.kullanicilar = {};
 
 var con = mysql.createConnection({
     host: "localhost",
-    user: "root",
-    password: "AZNp5415893"
+    user: "emilmammadov",
+    password: "Emil1234"
 });
   
 con.connect(function(err) {
