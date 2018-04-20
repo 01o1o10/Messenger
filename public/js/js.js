@@ -87,7 +87,9 @@ $(document).ready(function(){
     });
 
 
-    $('#message-form').submit(function(){
+    $('#message-form').submit(function(e){
+        e.preventDefault();
+        
         var message = $('#message').val();
         socket.emit('message', message, username, selectedUsername);
         $('.content').append('<div class="message"><p style="font-size: 1em; float: right;">' + message +'</p></div>');

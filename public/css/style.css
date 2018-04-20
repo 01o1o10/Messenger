@@ -50,7 +50,7 @@
     margin: 0;
     width: 100%;
     float: left;
-    display: none;
+    /*display: none;*/
 }
 
 .online {
@@ -85,8 +85,10 @@
 }
 
 .message-content {
+    box-shadow: 1px 1px 4px black; 
     width: 75%;
     margin: 0;
+    padding: 0;
     float: right;
 }
 
@@ -96,15 +98,14 @@
     box-shadow: 1px 1px 4px black; 
 }
 
-.current-user h5 {
-    margin: 0;
-    padding-left: 10%; 
+.current-user { 
+    width: 89%;
 }
 
 .content {
     margin: 0;
     width: 100%;
-    height: 900px;
+    height: 900px; 
     background-image: url("./../images/bg.jpg");
 }
 
@@ -165,9 +166,10 @@
 }
 
 .dropdown {
-    margin-right: 3px;  
-    margin-top: -21px;
+    display: inline;
     float: right;
+    width: 9%;
+    margin: 3px;  
 }
 
 .dropdown-menu {
@@ -181,4 +183,14 @@
     height: 30px;
     margin-top: 10px;
     color: white;
+}
+
+.content ul{
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.content ul li{
+    list-style-type: none;
 }

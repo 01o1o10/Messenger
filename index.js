@@ -145,6 +145,7 @@ io.on('connection', function (socket) {
     });
 
     socket.on('set messages', function(user1, user2, callback){
+        console.log('mesaj çekme hatası');
         query("select * from messages where (user1='" + user1 + "' and user2='" + user2 + "') or (user2='" + user1 + "' and user1='" + user2 + "');", callback);
     });
 
