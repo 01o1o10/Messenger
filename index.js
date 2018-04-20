@@ -36,6 +36,26 @@ function query(sql, callback){
     });
 }
 
+function refreshUsers(){
+    query("SELECT * FROM users", function(result){
+    });
+}
+
+setInterval(checkConnection, 15000);
+
+function checkConnection(){
+    query("select * from users", function(result){
+        for(var i in result){
+            if(global.kullanicilar[result[i].username] == undefined){
+                con.query("update users set onlinedurum=0 where username='" + result[i].username + "';");
+            }
+            if(i == result.length -1){
+                io.emit('refresh users', result);
+            }
+        }
+    });
+}
+
 io.on('connection', function (socket) {
     socket.on('register', function(user1, callback){
         con.query("SELECT * FROM users WHERE username = '" + user1 + "'", function (err, result) {
@@ -44,12 +64,10 @@ io.on('connection', function (socket) {
                 var sql = "insert into users values('" + user1 + "', 0);";
                 con.query(sql, function (err, result) {
                     if (err) throw err;
-                    console.log("1 record inserted");
                     callback(true);
                 });
             }
             else{
-                console.log("Zaten bu isme sahip bir kullanıcı var.");
                 callback(false);
             }
             
@@ -101,19 +119,16 @@ io.on('connection', function (socket) {
 
     socket.on('izin istegi', function(user1, user2){
         query("insert into izinler values('" + user1 + "','" + user2 + "', 0, 1);", function(result){});
-        global.kullanicilar[user2].emit('izin istegi', user1);
+        if(global.kullanicilar[user2] != undefined){
+            global.kullanicilar[user2].emit('izin istegi', user1);
+        }
     });
 
     socket.on('message', function(message, user1, user2){
-        /*con.query("SELECT * FROM izinler WHERE (user1='" + user1 + "' and user2='" + user2 + "') and izin=" + 1 + ";", function (err, result, fields) {
-            if (err) throw err;
-            if(result.length == 1){*/
-                con.query("INSERT INTO messages(user1, user2, message, okundu) values('" + user1 + "','" + user2 +"','" + message + "', 0);", function (err, result, fields) {
-                    if (err) throw err;
-                    console.log("mesaj eklendi");
-                });
-            /*}
-        });*/
+        con.query("INSERT INTO messages(user1, user2, message, okundu) values('" + user1 + "','" + user2 +"','" + message + "', 0);");
+        if(global.kullanicilar[user2] != undefined){
+            global.kullanicilar[user2].emit('message', message, user1);
+        }
     });
 
     socket.on('get perm reqs', function(user2, callback){
@@ -121,14 +136,21 @@ io.on('connection', function (socket) {
     });
 
     socket.on('set perm', function(user1, user2, perm){
-        console.log('set perm aldı');
-        console.log(user1 + " " + user2);
+        con.query("insert into izinler values('" + user2 + "', '" + user1 + "'," + perm + ", 0);");
         query("update izinler set istek=0, izin=" + perm + " where user1='" + user1 + "' and user2='" + user2 + "';", function(result){
-            console.log('izinler güncellendi');
-            console.log(result);
-            global.kullanicilar[user1].emit('perm res', perm, user2);
-            console.log('perm res gönderilmiş olmalı');
+            if(global.kullanicilar[user1] != undefined){
+                global.kullanicilar[user1].emit('perm res', perm, user2);
+            }
         });
+    });
+
+    socket.on('set messages', function(user1, user2, callback){
+        query("select * from messages where (user1='" + user1 + "' and user2='" + user2 + "') or (user2='" + user1 + "' and user1='" + user2 + "');", callback);
+    });
+
+    socket.on('disc', function(username){
+        con.query("UPDATE users SET onlinedurum = 0 WHERE username='" + username + "';");
+        refreshUsers();
     });
 
     socket.on('disconnect', function(){

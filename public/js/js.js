@@ -51,22 +51,23 @@ $(document).ready(function(){
     });
 
     $(document).on('click', 'td', function(){///user selection
-        $('.content').children().remove();
-        selectedUsername = $(this).children().children().first().next().html();
+        $('#message-form').prevAll().remove();
+        selectedUsername = $(this).children().first().next().html();
         socket.emit('user selected', username, selectedUsername, function(message){
             if(message){
                 $('.content').append(message);
             }
             else{
                 $('#message-form').show();
+                setMessages();
             }
             $('.izin-istegi1 #evet').click(function(){
-                $('.content').children().remove();
+                $('#message-form').prevAll().remove();
                 socket.emit('izin istegi', username, selectedUsername);
                 $('.content').append('<div class="izin-istegi1">İstek gönderildi!</br></div>');
             });
             $('.izin-istegi1 #hayir').click(function(){
-                $('.content').children().remove();
+                $('#message-form').prevAll().remove();
             });
         });
     });
@@ -86,7 +87,7 @@ $(document).ready(function(){
     });
 
 
-    $('#message-submit').click(function(){
+    $('#message-form').submit(function(){
         var message = $('#message').val();
         socket.emit('message', message, username, selectedUsername);
         $('.content').append('<div class="message"><p style="font-size: 1em; float: right;">' + message +'</p></div>');
@@ -100,41 +101,41 @@ $(document).ready(function(){
     });
 
     socket.on('perm res', function(perm, user2){
-        alert('perm resi aaldı');
-        console.log(perm);
-        console.log(user2);
-        console.log(selectedUsername)
         if(selectedUsername == user2){
-            alert('hala aynı kullanıcının mesajları açık');
-            alert('izin sonucu' + perm);
             if(perm){
-                alert('contenti temizleyip mesajlaşma kısmını göstermesi lazım');
-                $('.content').children().remove();
+                $('#message-form').prevAll().remove();
                 $('#message-form').show();
             }
             else{
-                alert('content e red cevabını vermesi lazım');
-                $('.content').children().remove();
+                $('#message-form').prevAll().remove();
                 $('.content').append('<div class="receiver-message"><p style="font-size: 1em; color: red;">İstek reddedildi!</p></div>');
             }
         }
     });
 
+    socket.on('message', function(message, sender){
+        if(sender == selectedUsername){
+            $('.content').append('<div class="receiver-message"><p style="font-size: 1em;">' + message + '</p></div>');
+        }
+    });
+
     $('.exit').click(function(){
+        $('.messenger').hide();
+        $('.giris').show();
+        $('.header').show();
+        socket.emit('disc', username);
         socket.emit('disconnect');
-        console.log(username);
     });
 
     ///FUNCTİONS
     function setPerm(perm, user){
-        console.log(username + " " + user);
-        alert('set perm i gönderecek');
         socket.emit('set perm', user, username, perm);
     }
 
     socket.on('refresh users', setUsers);
 
     function setUsers(users){
+        console.log('refreshed');
         $('#users-tbody').children().remove();
         for(var i in users){
             if(users[i].username != username){
@@ -146,6 +147,19 @@ $(document).ready(function(){
                 }
             }
         }
+    }
+
+    function setMessages(){
+        socket.emit('set messages', username, selectedUsername, function(messages){
+            for(var i in messages){
+                if(messages[i].user1 == username){
+                    $('.content').append('<div class="sender-message"><p style="font-size: 1em;">' + messages[i].message + '</p></div>');
+                }   
+                else{
+                    $('.content').append('<div class="receiver-message"><p style="font-size: 1em;">' + messages[i].message + '</p></div>');
+                }
+            }
+        });
     }
 
     function setPerReqs(perReqs){
