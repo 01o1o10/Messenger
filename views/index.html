@@ -68,8 +68,26 @@
                 </table>
             </div>
             <div class="message-content">
-                <div class="row current-user"><h5>Kullanıcı</h5></div>
-                <div class="row content"><div class="message"><p style="font-size: 1em;">Hello</p></div></div>
+                <div class="top-bar">
+                    <div class="row current-user">
+                        <h5>Kullanıcı</h5>
+                    </div>                                          
+                    <div class="dropdown">
+                        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                        <img id="notify-icon" src="./../public/images/notification.png">
+                        </button>
+                        <div class="dropdown-menu">
+                        </div>
+                    </div>
+                </div>
+                <div class="row content">
+                    <div class="sender-message"><p style="font-size: 1em;">Hello</p></div>
+                    <div class="receiver-message"><p style="font-size: 1em;">Hello</p></div>
+                    <form class="form-group" id="message-form">
+                        <textarea id="message" class="form-control"></textarea>
+                        <input type="submit" value="Gönder" class="btn btn-primary btn-lg button" id="message-submit">
+                    </form>
+                </div>
             </div>
         </div>
         
