@@ -39,8 +39,30 @@
             </div>
         </div>
 
+        <script>
+                function previewFile(){
+                var preview = document.getElementById('upimg'); //selects the query named img
+                var file    = document.querySelector('input[type=file]').files[0]; //sames as here
+                var reader  = new FileReader();
+            
+                reader.onloadend = function () {
+                    preview.src = reader.result;
+                }
+            
+                if (file) {
+                    reader.readAsDataURL(file); //reads the data as a URL
+                } else {
+                    preview.src = "";
+                }
+            }
+            
+            previewFile();  //calls the function named previewFile()
+        </script>
+
         <div class="row kaydol">
             <form id="register-form" class="form-group form">
+                <input type="file" onchange="previewFile()"><br>
+                <img src="" height="200" id="upimg" alt="Image preview...">
                 <label for="username">User name: </label>
                 <input type="text" name="username" id="rusername" class="form-control">
                 <input value="Kaydol" type="submit" class="btn btn-primary btn-lg button">
@@ -56,11 +78,11 @@
         </div>
 
         <div class="row messenger">
-            <div class="col-sm-4 users">         
+            <div class="users">         
                 <table class="table table-dark table-striped">
                 <thead>
                     <tr>
-                    <th>Kullanıcılar</th>
+                    <th id="user"><p></p></th>
                     <th>
                         <input type="image" class="exit" value="submit" src="./../public/images/exit.png" />
                     </th>
@@ -70,10 +92,10 @@
                 </tbody>
                 </table>
             </div>
-            <div class="container col-sm-8 message-content">
+            <div class="container message-content">
                 <div class="container row top-bar">
                     <div class="current-user">
-                        <h5>Kullanıcı</h5>
+                        <h5></h5>
                     </div>                                          
                     <div class="dropdown">
                         <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
@@ -85,17 +107,16 @@
                 </div>
                 <div class="container row content">
                     <ul>
-                        <li class="sender-message"><p style="font-size: 1em;">Hello</p></li>
-                        <li class="receiver-message"><p style="font-size: 1em;">Hello</p></li>
                     </ul>
-                    <form class="form-group" id="message-form">
-                        <textarea id="message" class="form-control"></textarea>
-                        <input type="submit" value="Gönder" class="btn btn-primary btn-lg button" id="message-submit">
-                    </form>
+                    <div class="row message-form-wrapper">
+                        <form class="form-group" id="message-form">
+                            <textarea id="message" class="form-control"></textarea>
+                            <input type="submit" value="Gönder" class="btn btn-primary btn-lg button" id="message-submit">
+                        </form>
+                    </div>
                 </div>
             </div>
-        </div>
-        
+        </div>  
     </div>
     <script type="application/javascript" src="./../public/js/js.js"></script>
 </body>

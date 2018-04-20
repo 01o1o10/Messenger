@@ -1,3 +1,7 @@
+body {
+    background-image: url("./../images/bg.jpg");
+}
+
 .hosgeldin {
     display: block;
     margin: auto;
@@ -50,7 +54,7 @@
     margin: 0;
     width: 100%;
     float: left;
-    /*display: none;*/
+    display: none;
 }
 
 .online {
@@ -74,51 +78,91 @@
 }
 
 .users {
-    width: 25%;
+    width: 35%;
     margin: 0;
-    padding: 0px;
+    padding: 0;
     float: left;
 }
 
 .users thead tr {
-    height: 60px;
+    height: auto;
+    padding: 3%;
+}
 
+#user{
+    font-size: 2em;
+}
+
+.exit {
+    width: 58%;
+    height: auto;
+    margin: auto;
+    padding: 3%;
+    float: right;
+    color: white;
 }
 
 .message-content {
     box-shadow: 1px 1px 4px black; 
-    width: 75%;
+    width: 65%;
     margin: 0;
     padding: 0;
     float: right;
 }
 
 .message-content .top-bar {
-    height: 70px;
+    height: auto;
     margin: 0;
+    padding: 2%;
     background-color: #ece5dd; 
     box-shadow: 1px 1px 4px grey; 
     position: relative;
 }
 
 .current-user { 
-    width: 84%;
+    width: 85%;
+    padding: 1%;
+}
+
+.current-user h5{ 
+    margin: auto;
+    display: block;
+}
+
+#notify-icon {
+    height: 70%;
+    width: 70%;
+    margin: auto;
+    display: inline;
+}
+
+.dropdown {
+    width: 10%;
+    display: block;
+    margin: auto;
+    padding: 0;
+    float: right;
+}
+
+.dropdown-menu {
+    width: 300px;
+    padding: 20px;
+    margin-left: -210px;
 }
 
 .content {
     margin: 0;
     width: 100%;
-    height: 900px; 
-    background-image: url("./../images/bg.jpg");
+    height: auto; 
 }
 
-#message-form {
+.message-form-wrapper {
     position: fixed;
+    display: inline;
     bottom: 0px;
-    display: none;
-    width: 44%;
-    margin: 0;
-
+    left: 44%;
+    right: 21%;
+    width: 35%;
 }
 
 #message {
@@ -163,34 +207,6 @@
     border-radius: 10px;
     background-color: white;
     box-shadow: 1px 1px 1px black; 
-}
-
-#notify-icon {
-    height: 40px;
-    width: 40px;
-    margin: auto;
-    display: inline;
-}
-
-.dropdown {
-    display: block;
-    margin: auto;
-    padding: 0;
-    float: right;
-}
-
-.dropdown-menu {
-    width: 300px;
-    padding: 20px;
-    margin-left: -210px;
-}
-
-.exit {
-    width: 30px;
-    height: 30px;
-    margin: auto;
-    float: right;
-    color: white;
 }
 
 .content ul{

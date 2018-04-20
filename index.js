@@ -9,7 +9,7 @@ var mysql = require('mysql');
 app.use('/public', express.static(path.join(__dirname, 'public'))); 
 app.use('/views', express.static(path.join(__dirname, 'views'))); 
 
-server.listen(1111);
+server.listen(1111, '192.168.0.16');
 
 app.get('/', function (req, res) {
   res.sendFile(__dirname + '/views/index.html');
@@ -18,9 +18,9 @@ app.get('/', function (req, res) {
 global.kullanicilar = {};
 
 var con = mysql.createConnection({
-    host: "localhost",
-    user: "emilmammadov",
-    password: "Emil1234"
+    host: "127.0.0.1",
+    user: "root",
+    password: "AZNp5415893"
 });
   
 con.connect(function(err) {
@@ -145,7 +145,6 @@ io.on('connection', function (socket) {
     });
 
     socket.on('set messages', function(user1, user2, callback){
-        console.log('mesaj çekme hatası');
         query("select * from messages where (user1='" + user1 + "' and user2='" + user2 + "') or (user2='" + user1 + "' and user1='" + user2 + "');", callback);
     });
 

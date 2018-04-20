@@ -1,5 +1,5 @@
 $(document).ready(function(){
-    var socket = io.connect('http://localhost:1111');
+    var socket = io.connect('192.168.0.16:1111');
     var username;
     var selectedUsername;
 
@@ -37,6 +37,7 @@ $(document).ready(function(){
         e.preventDefault();
 
         username = $('#lusername').val();
+        $('#user').html(username);
         socket.emit('get perm reqs',  username, setPerReqs);
         socket.emit('login', username, function(data){
             if(data){
@@ -50,24 +51,25 @@ $(document).ready(function(){
         });
     });
 
-    $(document).on('click', 'td', function(){///user selection
-        $('#message-form').prev().children().remove();
+    $(document).on('click', '#usr', function(){///user selection
+        $('.content ul').children().remove();
         selectedUsername = $(this).children().first().next().html();
+        $('.current-user h5').html(selectedUsername);
         socket.emit('user selected', username, selectedUsername, function(message){
             if(message){
-                $('.content').append(message);
+                $('.content ul').append(message);
             }
             else{
                 $('#message-form').show();
                 setMessages();
             }
             $('.izin-istegi1 #evet').click(function(){
-                $('#message-form').prev().children().remove();
+                $('.content ul').children().remove();
                 socket.emit('izin istegi', username, selectedUsername);
-                $('.content').append('<div class="izin-istegi1">İstek gönderildi!</br></div>');
+                $('.content ul').append('<div class="izin-istegi1">İstek gönderildi!</br></div>');
             });
             $('.izin-istegi1 #hayir').click(function(){
-                $('#message-form').prev().children().remove();
+                $('.content ul').children().remove();
             });
         });
     });
@@ -92,7 +94,7 @@ $(document).ready(function(){
         
         var message = $('#message').val();
         socket.emit('message', message, username, selectedUsername);
-        $('.content ul').append('<li class="message"><p style="font-size: 1em; float: right;">' + message +'</p></li>');
+        $('.content ul').append('<li class="sender-message"><p style="font-size: 1em; float: right;">' + message +'</p></li>');
     });
 
     ///EVENTS
@@ -105,12 +107,12 @@ $(document).ready(function(){
     socket.on('perm res', function(perm, user2){
         if(selectedUsername == user2){
             if(perm){
-                $('#message-form').prev().children().remove();
+                $('.content ul').children().remove();
                 $('#message-form').show();
             }
             else{
-                $('#message-form').prev().children().remove();
-                $('.content').append('<div class="receiver-message"><p style="font-size: 1em; color: red;">İstek reddedildi!</p></div>');
+                $('.content ul').children().remove();
+                $('.content ul').append('<li class="receiver-message"><p style="font-size: 1em; color: red;">İstek reddedildi!</p></li>');
             }
         }
     });
@@ -142,17 +144,16 @@ $(document).ready(function(){
         for(var i in users){
             if(users[i].username != username){
                 if(users[i].onlinedurum){
-                    $('#users-tbody').append('<tr><td><div class="online"></div><p>' + users[i].username +'</p></td></tr>');
+                    $('#users-tbody').append('<tr><td id="usr" width="70%"><div class="online"></div><p>' + users[i].username +'</p></td><td></td></tr>');
                 }
                 else{
-                    $('#users-tbody').append('<tr><td><div class="offline"></div><p>' + users[i].username +'</p></td></tr>');
+                    $('#users-tbody').append('<tr><td id="usr" width="70%"><div class="offline"></div><p>' + users[i].username +'</p></td><td></td></tr>');
                 }
             }
         }
     }
 
     function setMessages(){
-        alert($('.content ul').html());
         socket.emit('set messages', username, selectedUsername, function(messages){
             for(var i in messages){
                 if(messages[i].user1 == username){
