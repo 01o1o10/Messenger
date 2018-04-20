@@ -38,12 +38,11 @@ $(document).ready(function(){
 
         username = $('#lusername').val();
         socket.emit('get perm reqs',  username, setPerReqs);
-        socket.emit('login', username, function(data, ){
+        socket.emit('login', username, function(data){
             if(data){
                 $('.header').hide();
                 $('.giris').hide();
-                $('.messenger').show();
-                socket.emit('set users', setUsers);
+                $('.messenger').show(); 
             }
             else{
                 $('.giris').append('<h5 style="color: red; text-align: center;">Kullanıcı adı geçersiz!</br>Kontrol ederek tekrar deneyiniz.</h5>');
@@ -51,7 +50,7 @@ $(document).ready(function(){
         });
     });
 
-    $(document).on('click', 'tr', function(){///user selection
+    $(document).on('click', 'td', function(){///user selection
         $('.content').children().remove();
         selectedUsername = $(this).children().children().first().next().html();
         socket.emit('user selected', username, selectedUsername, function(message){
@@ -76,7 +75,6 @@ $(document).ready(function(){
         var user = $(this).attr('username');
         $(this).parent().prev().remove();
         $(this).parent().remove();
-        alert('kabul edildi');
         setPerm(1, user);
     });
 
@@ -95,11 +93,7 @@ $(document).ready(function(){
     });
 
     ///EVENTS
-
-    socket.on('refresh users', function(users){
-        setUsers(users);
-    });
-    
+   
     socket.on('izin istegi', function(user1){
         $('.dropdown-menu').append('<p><strong style="color: blue;">' + user1 + '</strong> sizinle çetleşmek istiyor.<p><div class="btn-group"><button class="btn btn-primary btn-sm button" type="button" id="kabulet" username="' + user1 + '">Kabulet</button><button class="btn btn-primary btn-sm button" type="button" id="reddet" username="' + user1 +  '">Reddet</button></div></div><hr>');
         //ses çıkar
@@ -107,6 +101,9 @@ $(document).ready(function(){
 
     socket.on('perm res', function(perm, user2){
         alert('perm resi aaldı');
+        console.log(perm);
+        console.log(user2);
+        console.log(selectedUsername)
         if(selectedUsername == user2){
             alert('hala aynı kullanıcının mesajları açık');
             alert('izin sonucu' + perm);
@@ -116,10 +113,16 @@ $(document).ready(function(){
                 $('#message-form').show();
             }
             else{
-                alert('content e red cevabını vermesi lazım')
+                alert('content e red cevabını vermesi lazım');
+                $('.content').children().remove();
                 $('.content').append('<div class="receiver-message"><p style="font-size: 1em; color: red;">İstek reddedildi!</p></div>');
             }
         }
+    });
+
+    $('.exit').click(function(){
+        socket.emit('disconnect');
+        console.log(username);
     });
 
     ///FUNCTİONS
@@ -128,6 +131,8 @@ $(document).ready(function(){
         alert('set perm i gönderecek');
         socket.emit('set perm', user, username, perm);
     }
+
+    socket.on('refresh users', setUsers);
 
     function setUsers(users){
         $('#users-tbody').children().remove();

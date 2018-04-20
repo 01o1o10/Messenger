@@ -66,6 +66,7 @@ io.on('connection', function (socket) {
                 socket.username = user;
                 global.kullanicilar[user] = socket;
                 con.query("UPDATE users SET onlinedurum = 1 WHERE username='" + user + "';");
+                refreshUsers();
                 callback(true);
             }
             else{
@@ -74,9 +75,12 @@ io.on('connection', function (socket) {
         });
     });
 
-    socket.on('set users', function(setUsers){
-        query("SELECT * FROM users", setUsers);
-    });
+    function refreshUsers(){
+        query("SELECT * FROM users", function(result){
+            socket.emit('refresh users', result);
+            socket.broadcast.emit('refresh users', result);
+        });
+    }
 
     socket.on('user selected', function(user1, user2, callback){
         query("select * from izinler where user1='" + user1 + "' and user2='" + user2 + "';", function(result){
@@ -122,16 +126,13 @@ io.on('connection', function (socket) {
         query("update izinler set istek=0, izin=" + perm + " where user1='" + user1 + "' and user2='" + user2 + "';", function(result){
             console.log('izinler güncellendi');
             console.log(result);
-            global.kullanicilar[user1].emit('perm res', perm, user1);
+            global.kullanicilar[user1].emit('perm res', perm, user2);
             console.log('perm res gönderilmiş olmalı');
         });
     });
 
     socket.on('disconnect', function(){
         con.query("UPDATE users SET onlinedurum = 0 WHERE username='" + socket.username + "';");
-        con.query("SELECT * FROM users", function (err, result, fields) {
-            if (err) throw err;
-            socket.broadcast.emit('refresh users', result);
-        });
+        refreshUsers();
     });
 });
