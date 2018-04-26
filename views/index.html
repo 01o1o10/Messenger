@@ -19,6 +19,7 @@
 
     <link rel="stylesheet" type="text/css" media="screen" href="./../public/css/style.css" />
     <script src="./../public/js/socket.io.slim.js"></script>
+    <script src="./../public/js/socket.io-stream.js"></script>
     <script src="./../public/js/jquery.js"></script>
 </head>
 <body>
@@ -39,30 +40,10 @@
             </div>
         </div>
 
-        <script>
-                function previewFile(){
-                var preview = document.getElementById('upimg'); //selects the query named img
-                var file    = document.querySelector('input[type=file]').files[0]; //sames as here
-                var reader  = new FileReader();
-            
-                reader.onloadend = function () {
-                    preview.src = reader.result;
-                }
-            
-                if (file) {
-                    reader.readAsDataURL(file); //reads the data as a URL
-                } else {
-                    preview.src = "";
-                }
-            }
-            
-            previewFile();  //calls the function named previewFile()
-        </script>
-
         <div class="row kaydol">
-            <form id="register-form" class="form-group form">
-                <input type="file" onchange="previewFile()"><br>
-                <img src="" height="200" id="upimg" alt="Image preview...">
+            <form id="register-form">
+                <label for="foto">Photo: </label>
+                <input type="file" name="foto" id="img"><br>
                 <label for="username">User name: </label>
                 <input type="text" name="username" id="rusername" class="form-control">
                 <input value="Kaydol" type="submit" class="btn btn-primary btn-lg button">

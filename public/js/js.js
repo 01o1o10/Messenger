@@ -1,5 +1,5 @@
 $(document).ready(function(){
-    var socket = io.connect('192.168.0.16:1111');
+    var socket = io.connect('192.168.43.36:1111');
     var username;
     var selectedUsername;
 
@@ -21,7 +21,11 @@ $(document).ready(function(){
         e.preventDefault();
 
         var username = $('#rusername').val();
-        socket.emit('register', username, function(data){
+        var file = document.getElementById('img').files[0];
+        var stream = ss.createStream();
+    
+        // upload a file to the server.
+        ss(socket).emit('register', {image: stream, nickname: username, filename: file.name}, function(data){
             if(data){
                 alert("Kayıt başarılı!\nGiriş sayfasına yönlendirileceksiniz.");
                 $('.kaydol').hide();
@@ -31,6 +35,7 @@ $(document).ready(function(){
                 $('.kaydol').append('<h5 style="color: red; text-align: center;">Bu kullanıcı adı kayıtlı. Başka bir kullanıcı adı seçiniz!</h5>');
             }
         });
+        ss.createBlobReadStream(file).pipe(stream);
     });
 
     $('#login-form').submit(function(e){
@@ -60,7 +65,7 @@ $(document).ready(function(){
                 $('.content ul').append(message);
             }
             else{
-                $('#message-form').show();
+                $('.message-form-wrapper').show();
                 setMessages();
             }
             $('.izin-istegi1 #evet').click(function(){
@@ -89,7 +94,7 @@ $(document).ready(function(){
     });
 
 
-    $('#message-form').submit(function(e){
+    $('.message-form-wrapper').submit(function(e){
         e.preventDefault();
         
         var message = $('#message').val();
@@ -108,7 +113,7 @@ $(document).ready(function(){
         if(selectedUsername == user2){
             if(perm){
                 $('.content ul').children().remove();
-                $('#message-form').show();
+                $('.message-form-wrapper').show();
             }
             else{
                 $('.content ul').children().remove();
@@ -143,11 +148,12 @@ $(document).ready(function(){
         $('#users-tbody').children().remove();
         for(var i in users){
             if(users[i].username != username){
+                console.log(users[i].photo);
                 if(users[i].onlinedurum){
-                    $('#users-tbody').append('<tr><td id="usr" width="70%"><div class="online"></div><p>' + users[i].username +'</p></td><td></td></tr>');
+                    $('#users-tbody').append('<tr><td id="usr" width="70%"><div class="online"></div><p>' + users[i].username +'</p><img width="40" height="40" src="./../public/userphotos/' +users[i].imgname + '"></td><td></td></tr>');
                 }
                 else{
-                    $('#users-tbody').append('<tr><td id="usr" width="70%"><div class="offline"></div><p>' + users[i].username +'</p></td><td></td></tr>');
+                    $('#users-tbody').append('<tr><td id="usr" width="70%"><div class="offline"></div><p>' + users[i].username +'</p><img width="40" height="40" src="./../public/userphotos/' +users[i].imgname + '"></td><td></td></tr>');
                 }
             }
         }

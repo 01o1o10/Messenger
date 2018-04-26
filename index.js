@@ -5,11 +5,16 @@ var path = require('path');
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
 var mysql = require('mysql');
+var fs = require('fs');
+
+
+var ss = require('socket.io-stream');
+
 
 app.use('/public', express.static(path.join(__dirname, 'public'))); 
 app.use('/views', express.static(path.join(__dirname, 'views'))); 
 
-server.listen(1111, '192.168.0.16');
+server.listen(1111, '192.168.43.36');
 
 app.get('/', function (req, res) {
   res.sendFile(__dirname + '/views/index.html');
@@ -20,12 +25,12 @@ global.kullanicilar = {};
 var con = mysql.createConnection({
     host: "127.0.0.1",
     user: "root",
-    password: "AZNp5415893"
+    password: "AZNp5415893",
+    database: "messenger"
 });
   
 con.connect(function(err) {
     if (err) throw err;
-    con.query("use messenger");
     console.log("DB Connect successful!");
 });
 
@@ -57,11 +62,15 @@ function checkConnection(){
 }
 
 io.on('connection', function (socket) {
-    socket.on('register', function(user1, callback){
-        con.query("SELECT * FROM users WHERE username = '" + user1 + "'", function (err, result) {
+    ss(socket).on('register', function(veri, callback) {
+        var filename = path.basename(veri.filename);
+        veri.image.pipe(fs.createWriteStream("./public/userphotos/" + veri.filename));
+        //"~/Desktop/Messenger/public"
+
+        con.query("SELECT * FROM users WHERE username = '" + veri.nickname + "'", function (err, result) {
             if (err) throw err;
             if(result.length == 0){//böyle bir kullanıcı yoksa
-                var sql = "insert into users values('" + user1 + "', 0);";
+                var sql = "insert into users(username, onlinedurum, imgname) values('" + veri.nickname + "', 0, '" + veri.filename +"');";
                 con.query(sql, function (err, result) {
                     if (err) throw err;
                     callback(true);
@@ -71,9 +80,7 @@ io.on('connection', function (socket) {
                 callback(false);
             }
             
-          });
-        
-        
+        });
     });
 
     socket.on('login', function(user, callback){

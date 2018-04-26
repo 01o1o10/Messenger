@@ -163,6 +163,7 @@ body {
     left: 44%;
     right: 21%;
     width: 35%;
+    display: none;
 }
 
 #message {
